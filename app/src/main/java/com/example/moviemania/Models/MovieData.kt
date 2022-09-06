@@ -1,8 +1,8 @@
 package com.example.moviemania.Models
 
-data class MovieData<T>(
+data class MovieData<Movies>(
     val page: Int?,
-    val results: T?,
+    val results: Movies?,
     val total_pages: Int?,
     val total_results: Int?
 )
