@@ -47,23 +47,48 @@ class SearchMoviesFragment : Fragment() {
 
     }
 
-    private fun observeResponseText()=viewModel.responseText.observe(viewLifecycleOwner){
+    private fun observeResponseText() = viewModel.responseText.observe(viewLifecycleOwner) {
         //Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT).show()
         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
     }
 
     private fun observeSearchResults() = viewModel.searchReuslt.observe(viewLifecycleOwner) {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        val adapter = it?.let {  MovieAdapter(it) }
+        val adapter = it?.let { MovieAdapter(it) }
         recyclerView.adapter = adapter
-        adapter?.setOnItemClickListener(object :MovieAdapter.onItemClickListener{
+        adapter?.setOnItemClickListener(object : MovieAdapter.onItemClickListener {
             override fun onToggleClick(isFavorite: Boolean, item: Movies) {
-                val movie = Movie(movieName = item.original_title, moviePoster = item.poster_path, movieReleaseDate = item.release_date, movieBanner = item.backdrop_path, movieOverview = item.overview)
-                if(isFavorite) favViewModel.removeMovie(movie) else favViewModel.insertMovie(movie)
+                val movie = Movie(
+                    movieName = item.original_title,
+                    moviePoster = item.poster_path,
+                    movieReleaseDate = item.release_date,
+                    movieBanner = item.backdrop_path,
+                    movieOverview = item.overview
+                )
+                if (isFavorite) favViewModel.removeMovie(movie) else favViewModel.insertMovie(movie)
             }
 
             override fun onItemClick(position: Int) {
-                val action = SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment(it[position].backdrop_path,it[position].poster_path,it[position].original_title,it[position].release_date,it[position].overview)
+
+                val movie = Movie(
+                    movieName = it[position].original_title,
+                    moviePoster = it[position].poster_path,
+                    movieReleaseDate = it[position].release_date,
+                    movieBanner = it[position].backdrop_path,
+                    movieOverview = it[position].overview,
+                    fav = it[position].fav
+                )
+
+                val action =
+                    SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment(
+                        it[position].fav,
+                        movie,
+                        it[position].backdrop_path,
+                        it[position].poster_path,
+                        it[position].original_title,
+                        it[position].release_date,
+                        it[position].overview
+                    )
                 findNavController().navigate(action)
             }
         })
@@ -75,7 +100,7 @@ class SearchMoviesFragment : Fragment() {
 
         etSearchText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if (s.length>3){
+                if (s.length > 3) {
                     viewModel.searchApiCall(s.toString())
                 }
             }

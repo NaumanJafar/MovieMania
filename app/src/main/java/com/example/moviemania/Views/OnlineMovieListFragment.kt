@@ -22,7 +22,7 @@ import com.example.moviemania.ViewModels.MovieViewModel
 class OnlineMovieListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private val viewModel: MovieViewModel by viewModels()
-    private val favViewModel:FavViewModel by viewModels()
+    private val favViewModel: FavViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,16 +42,14 @@ class OnlineMovieListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rv_onlineMovieFragment)
 
-            view.findViewById<ImageView>(R.id.searchIcon).setOnClickListener{
-               ( activity as MainActivity).navigateToSearchMoviesFragment()
-            }
-            observeMovies()
-            viewModel.apiCall()
-        view.findViewById<Button>(R.id.btn_favourites).setOnClickListener{
+        view.findViewById<ImageView>(R.id.searchIcon).setOnClickListener {
+            (activity as MainActivity).navigateToSearchMoviesFragment()
+        }
+        observeMovies()
+        viewModel.apiCall()
+        view.findViewById<Button>(R.id.btn_favourites).setOnClickListener {
             (activity as MainActivity).navigateToFavoritesFragment()
         }
-
-
 
 
     }
@@ -59,25 +57,46 @@ class OnlineMovieListFragment : Fragment() {
     private fun observeMovies() = viewModel.movies.observe(viewLifecycleOwner) {
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-        val adapter = it?.let {  MovieAdapter(it) }
+        val adapter = it?.let { MovieAdapter(it) }
         recyclerView.adapter = adapter
-        adapter?.setOnItemClickListener(object :MovieAdapter.onItemClickListener{
+        adapter?.setOnItemClickListener(object : MovieAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
-                val action = OnlineMovieListFragmentDirections.actionOnlineMovieListFragmentToMovieDetailFragment(it[position].backdrop_path,it[position].poster_path,it[position].original_title,it[position].release_date,it[position].overview)
+                val movie = Movie(
+                    movieName = it[position].original_title,
+                    moviePoster = it[position].poster_path,
+                    movieReleaseDate = it[position].release_date,
+                    movieBanner = it[position].backdrop_path,
+                    movieOverview = it[position].overview,
+                    fav = it[position].fav
+                )
+                val action =
+                    OnlineMovieListFragmentDirections.actionOnlineMovieListFragmentToMovieDetailFragment(
+                        it[position].fav,
+                        movie,
+                        it[position].backdrop_path,
+                        it[position].poster_path,
+                        it[position].original_title,
+                        it[position].release_date,
+                        it[position].overview
+
+
+                    )
                 findNavController().navigate(action)
             }
 
-            override fun onToggleClick( isFavorite: Boolean, item: Movies) {
-                val movie = Movie(movieName = item.original_title, moviePoster = item.poster_path, movieReleaseDate = item.release_date, movieBanner = item.backdrop_path, movieOverview = item.overview)
-                if(isFavorite) favViewModel.removeMovie(movie) else favViewModel.insertMovie(movie)
+            override fun onToggleClick(isFavorite: Boolean, item: Movies) {
+                val movie = Movie(
+                    movieName = item.original_title,
+                    moviePoster = item.poster_path,
+                    movieReleaseDate = item.release_date,
+                    movieBanner = item.backdrop_path,
+                    movieOverview = item.overview
+                )
+                if (isFavorite) favViewModel.removeMovie(movie) else favViewModel.insertMovie(movie)
             }
 
         })
     }
-
-
-
-
 
 
 }

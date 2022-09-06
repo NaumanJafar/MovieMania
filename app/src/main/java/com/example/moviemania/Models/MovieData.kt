@@ -1,12 +1,16 @@
 package com.example.moviemania.Models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
+
 data class MovieData<Movies>(
     val page: Int?,
     val results: Movies?,
     val total_pages: Int?,
     val total_results: Int?
 )
-
+@Parcelize
 data class Movies(
     val adult: Boolean,
     val backdrop_path: String?,
@@ -23,4 +27,4 @@ data class Movies(
     val vote_average: Double?,
     val vote_count: Int?,
     var fav : Boolean = false
-)
+):Parcelable

@@ -19,7 +19,7 @@ import com.example.moviemania.ViewModels.FavViewModel
 class FavoritesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private val viewModel:FavViewModel by viewModels()
+    private val viewModel: FavViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,15 +44,25 @@ class FavoritesFragment : Fragment() {
 
     private fun observeFavoritesResults() = viewModel.favList.observe(viewLifecycleOwner) {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        val adapter = it?.let {  FavAdapter(it) }
+        val adapter = it?.let { FavAdapter(it) }
         recyclerView.adapter = adapter
-        adapter?.setOnItemClickListener(object : FavAdapter.onItemClickListener{
+        adapter?.setOnItemClickListener(object : FavAdapter.onItemClickListener {
             override fun onToggleClick(isFavorite: Boolean, item: Movie) {
                 if (isFavorite) viewModel.removeMovie(item) else viewModel.insertMovie(item)
             }
 
             override fun onItemClick(position: Int) {
-                val action =FavoritesFragmentDirections.actionFavoritesFragmentToMovieDetailFragment(it[position].movieBanner,it[position].moviePoster,it[position].movieName,it[position].movieReleaseDate,it[position].movieOverview)
+
+                val action =
+                    FavoritesFragmentDirections.actionFavoritesFragmentToMovieDetailFragment(
+                        it[position].fav,
+                        it[position],
+                        it[position].movieBanner,
+                        it[position].moviePoster,
+                        it[position].movieName,
+                        it[position].movieReleaseDate,
+                        it[position].movieOverview
+                    )
                 findNavController().navigate(action)
             }
         })

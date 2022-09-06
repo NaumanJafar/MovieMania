@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import com.example.moviemania.Extensions.GlideImageExtension.loadImage
 import com.example.moviemania.R
+import com.example.moviemania.ViewModels.FavViewModel
 
 class MovieDetailFragment : Fragment() {
-
+    private val viewModel: FavViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -32,5 +34,25 @@ class MovieDetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.tv_movieNameDetailFragment).text = args?.movieName
         view.findViewById<TextView>(R.id.movieReleaseDateDetailFragment).text = args?.releaseDate
         view.findViewById<TextView>(R.id.movieOverview).text = args?.movieOverview
+        view.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setImageResource(
+            if (args?.favToggle == true){
+                R.drawable.redheart
+            }
+        else{
+            R.drawable.redheart_border
+            }
+        )
+        view.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setOnClickListener{
+            if (args?.favToggle ==true){
+                it.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setImageResource(R.drawable.redheart_border)
+                args.movie.fav = false
+                viewModel.removeMovie(args.movie)
+            }
+            else if(args?.favToggle==false) {
+                it.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setImageResource(R.drawable.redheart)
+                args.movie.fav=true
+                viewModel.insertMovie(args.movie)
+            }
+            }
+        }
     }
-}

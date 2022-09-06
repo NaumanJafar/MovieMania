@@ -60,6 +60,15 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="@null"/>
+        <argument
+            android:name="favToggle"
+            app:argType="boolean"
+            app:nullable="false"
+            />
+        <argument
+            android:name="movie"
+            app:argType="com.example.moviemania.Models.Movie" />
+
 
     </fragment>
     <fragment
