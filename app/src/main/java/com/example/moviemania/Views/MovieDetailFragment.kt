@@ -27,6 +27,19 @@ class MovieDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarMovieDetailFragment)
+        (activity as MainActivity).setSupportActionBar(toolbar);
+
+
+        // Display application icon in the toolbar
+        (activity as MainActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+
+        toolbar.setNavigationOnClickListener {
+            (activity as MainActivity).onBackPressed()
+        }
+
         super.onViewCreated(view, savedInstanceState)
      val args =arguments?.let { MovieDetailFragmentArgs.fromBundle(it) }
         view.findViewById<ImageView>(R.id.iv_moviePosterDetailFragment).loadImage(args?.moviePoster)
@@ -34,6 +47,7 @@ class MovieDetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.tv_movieNameDetailFragment).text = args?.movieName
         view.findViewById<TextView>(R.id.movieReleaseDateDetailFragment).text = args?.releaseDate
         view.findViewById<TextView>(R.id.movieOverview).text = args?.movieOverview
+        toolbar.title = args?.movieName
         view.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setImageResource(
             if (args?.favToggle == true){
                 R.drawable.redheart

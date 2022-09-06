@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -41,13 +42,21 @@ class OnlineMovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rv_onlineMovieFragment)
+        val toolbar =
+            view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarPopluarMoviesFragment)
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            (activity as MainActivity).onBackPressed()
+        }
+
 
         view.findViewById<ImageView>(R.id.searchIcon).setOnClickListener {
             (activity as MainActivity).navigateToSearchMoviesFragment()
         }
         observeMovies()
         viewModel.apiCall()
-        view.findViewById<Button>(R.id.btn_favourites).setOnClickListener {
+        view.findViewById<ImageView>(R.id.btn_favourites).setOnClickListener {
             (activity as MainActivity).navigateToFavoritesFragment()
         }
 
@@ -56,7 +65,7 @@ class OnlineMovieListFragment : Fragment() {
 
     private fun observeMovies() = viewModel.movies.observe(viewLifecycleOwner) {
         recyclerView.layoutManager =
-            GridLayoutManager(requireContext(), 3)
+            GridLayoutManager(requireContext(), 2)
         val adapter = it?.let { MovieAdapter(it) }
         recyclerView.adapter = adapter
         adapter?.setOnItemClickListener(object : MovieAdapter.onItemClickListener {

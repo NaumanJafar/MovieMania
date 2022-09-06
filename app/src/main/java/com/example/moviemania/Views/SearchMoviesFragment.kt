@@ -39,6 +39,15 @@ class SearchMoviesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSearchMoviesFragment)
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            (activity as MainActivity).onBackPressed()
+        }
+
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rv_searchMovie)
         observeSearchResults()
@@ -53,7 +62,7 @@ class SearchMoviesFragment : Fragment() {
     }
 
     private fun observeSearchResults() = viewModel.searchReuslt.observe(viewLifecycleOwner) {
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         val adapter = it?.let { MovieAdapter(it) }
         recyclerView.adapter = adapter
         adapter?.setOnItemClickListener(object : MovieAdapter.onItemClickListener {

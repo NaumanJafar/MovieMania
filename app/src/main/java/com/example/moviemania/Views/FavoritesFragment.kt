@@ -34,6 +34,15 @@ class FavoritesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val toolbar =
+            view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarFavoritesFragment)
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            (activity as MainActivity).onBackPressed()
+        }
+
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rv_favourites)
         viewModel.getAllFavMovies()
@@ -43,7 +52,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun observeFavoritesResults() = viewModel.favList.observe(viewLifecycleOwner) {
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         val adapter = it?.let { FavAdapter(it) }
         recyclerView.adapter = adapter
         adapter?.setOnItemClickListener(object : FavAdapter.onItemClickListener {
