@@ -1,15 +1,14 @@
-package com.example.moviemania.ViewModels
+package com.example.moviemania.viewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide.init
 import com.example.moviemania.AppApplication
-import com.example.moviemania.Database.MovieDao
-import com.example.moviemania.Database.MovieDatabase
-import com.example.moviemania.Models.Movie
-import com.example.moviemania.Models.Movies
+import com.example.moviemania.database.MovieDao
+import com.example.moviemania.database.MovieDatabase
+import com.example.moviemania.models.Movie
 import kotlinx.coroutines.launch
 
 class FavViewModel() : ViewModel() {
@@ -36,7 +35,8 @@ class FavViewModel() : ViewModel() {
 
         fun removeMovie(movie: Movie) {
             viewModelScope.launch {
-                movieDao.removeMovieFromFavorites(movie)
+                if (movieDao.removeMovieFromFavorites(movie) == 1)
+                    Log.i("Removed", "Yes ")
                 favMovieList = movieDao.getAllMovies()
                 _favList.postValue(favMovieList)
 

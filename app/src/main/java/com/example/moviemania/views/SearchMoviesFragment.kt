@@ -1,5 +1,6 @@
-package com.example.moviemania.Views
+package com.example.moviemania.views
 
+import android.os.Binder
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,18 +14,20 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviemania.Adapters.MovieAdapter
-import com.example.moviemania.Models.Movie
-import com.example.moviemania.Models.Movies
+import com.example.moviemania.adapters.MovieAdapter
+import com.example.moviemania.models.Movie
+import com.example.moviemania.models.Movies
 import com.example.moviemania.R
-import com.example.moviemania.ViewModels.FavViewModel
-import com.example.moviemania.ViewModels.MovieViewModel
+import com.example.moviemania.databinding.FragmentSearchMoviesBinding
+import com.example.moviemania.viewModels.FavViewModel
+import com.example.moviemania.viewModels.MovieViewModel
 
 
 class SearchMoviesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private val viewModel: MovieViewModel by viewModels()
     private val favViewModel: FavViewModel by viewModels()
+    private lateinit var binding:FragmentSearchMoviesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +38,13 @@ class SearchMoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_movies, container, false)
+        binding = FragmentSearchMoviesBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSearchMoviesFragment)
+        val toolbar = binding.toolbarSearchMoviesFragment
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
         (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
@@ -49,7 +53,7 @@ class SearchMoviesFragment : Fragment() {
         }
 
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.rv_searchMovie)
+        recyclerView = binding.rvSearchMovie
         observeSearchResults()
         setListenersForSearch()
         observeResponseText()
@@ -58,7 +62,10 @@ class SearchMoviesFragment : Fragment() {
 
     private fun observeResponseText() = viewModel.responseText.observe(viewLifecycleOwner) {
         //Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT).show()
+        val list:List<Movies>?=null
         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        val adapter = list?.let { it -> MovieAdapter(it) }
+        recyclerView.adapter=adapter
     }
 
     private fun observeSearchResults() = viewModel.searchReuslt.observe(viewLifecycleOwner) {

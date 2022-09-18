@@ -1,7 +1,7 @@
-package com.example.moviemania.Network
+package com.example.moviemania.network
 
-import com.example.moviemania.Models.MovieData
-import com.example.moviemania.Models.Movies
+import com.example.moviemania.models.MovieData
+import com.example.moviemania.models.Movies
 import retrofit2.http.GET
 import retrofit2.http.Query
 

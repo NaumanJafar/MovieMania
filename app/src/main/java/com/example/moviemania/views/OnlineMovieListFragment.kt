@@ -1,29 +1,29 @@
-package com.example.moviemania.Views
+package com.example.moviemania.views
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviemania.Adapters.MovieAdapter
-import com.example.moviemania.Models.Movie
-import com.example.moviemania.Models.Movies
+import com.example.moviemania.adapters.MovieAdapter
+import com.example.moviemania.models.Movie
+import com.example.moviemania.models.Movies
 import com.example.moviemania.R
-import com.example.moviemania.ViewModels.FavViewModel
-import com.example.moviemania.ViewModels.MovieViewModel
+import com.example.moviemania.databinding.FragmentOnlineMovieListBinding
+import com.example.moviemania.viewModels.FavViewModel
+import com.example.moviemania.viewModels.MovieViewModel
 
 
 class OnlineMovieListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private val viewModel: MovieViewModel by viewModels()
     private val favViewModel: FavViewModel by viewModels()
+    private lateinit var binding: FragmentOnlineMovieListBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,16 +34,18 @@ class OnlineMovieListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View
+    {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_online_movie_list, container, false)
+        binding = FragmentOnlineMovieListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.rv_onlineMovieFragment)
+        recyclerView =binding.rvOnlineMovieFragment
         val toolbar =
-            view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarPopluarMoviesFragment)
+            binding.toolbarPopluarMoviesFragment
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
         toolbar.setNavigationOnClickListener {
@@ -51,12 +53,12 @@ class OnlineMovieListFragment : Fragment() {
         }
 
 
-        view.findViewById<ImageView>(R.id.searchIcon).setOnClickListener {
+        binding.searchIcon.setOnClickListener {
             (activity as MainActivity).navigateToSearchMoviesFragment()
         }
         observeMovies()
         viewModel.apiCall()
-        view.findViewById<ImageView>(R.id.btn_favourites).setOnClickListener {
+        binding.btnFavourites.setOnClickListener {
             (activity as MainActivity).navigateToFavoritesFragment()
         }
 

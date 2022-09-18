@@ -1,25 +1,25 @@
-package com.example.moviemania.Views
+package com.example.moviemania.views
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviemania.Adapters.FavAdapter
-import com.example.moviemania.Adapters.MovieAdapter
-import com.example.moviemania.Models.Movie
+import com.example.moviemania.adapters.FavAdapter
+import com.example.moviemania.models.Movie
 import com.example.moviemania.R
-import com.example.moviemania.ViewModels.FavViewModel
+import com.example.moviemania.databinding.FragmentFavoritesBinding
+import com.example.moviemania.viewModels.FavViewModel
 
 class FavoritesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private val viewModel: FavViewModel by viewModels()
+    private lateinit var binding:FragmentFavoritesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +30,13 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val toolbar =
-            view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarFavoritesFragment)
+            binding.toolbarFavoritesFragment
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
         (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
@@ -44,7 +45,7 @@ class FavoritesFragment : Fragment() {
         }
 
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.rv_favourites)
+        recyclerView = binding.rvFavourites
         viewModel.getAllFavMovies()
         observeFavoritesResults()
 

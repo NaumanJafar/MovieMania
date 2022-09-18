@@ -1,4 +1,4 @@
-package com.example.moviemania.Models
+package com.example.moviemania.models
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

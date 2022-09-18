@@ -1,6 +1,6 @@
-package com.example.moviemania.Database
+package com.example.moviemania.database
 
-import com.example.moviemania.Models.Movie
+import com.example.moviemania.models.Movie
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room

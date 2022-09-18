@@ -1,8 +1,7 @@
-package com.example.moviemania.Models
+package com.example.moviemania.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.io.Serializable
 
 data class MovieData<Movies>(
     val page: Int?,

@@ -1,10 +1,10 @@
-package com.example.moviemania.Database
+package com.example.moviemania.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.moviemania.Models.Movie
+import com.example.moviemania.models.Movie
 
 
 @Dao
@@ -17,5 +17,5 @@ suspend fun insertMovie(movie: Movie)
 suspend fun getAllMovies():List<Movie>
 
 @Delete
-suspend fun removeMovieFromFavorites(movie: Movie)
+suspend fun removeMovieFromFavorites(movie: Movie) : Int
 }

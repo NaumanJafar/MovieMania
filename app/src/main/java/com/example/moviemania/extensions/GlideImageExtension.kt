@@ -1,8 +1,7 @@
-package com.example.moviemania.Extensions
+package com.example.moviemania.extensions
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.google.android.material.imageview.ShapeableImageView
 
 object GlideImageExtension {
     fun ImageView.loadImage(url:String?){

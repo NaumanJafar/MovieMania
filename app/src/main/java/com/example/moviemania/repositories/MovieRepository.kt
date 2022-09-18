@@ -1,9 +1,8 @@
-package com.example.moviemania.Repositories
+package com.example.moviemania.repositories
 
-import com.example.moviemania.Models.MovieData
-import com.example.moviemania.Models.Movies
-import com.example.moviemania.Network.NetworkManager
-import java.lang.Exception
+import com.example.moviemania.models.MovieData
+import com.example.moviemania.models.Movies
+import com.example.moviemania.network.NetworkManager
 
 class MovieRepository private constructor() {
     companion object {

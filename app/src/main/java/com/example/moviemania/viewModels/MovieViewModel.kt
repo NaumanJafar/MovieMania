@@ -1,11 +1,11 @@
-package com.example.moviemania.ViewModels
+package com.example.moviemania.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviemania.Models.Movies
-import com.example.moviemania.Repositories.MovieRepository
+import com.example.moviemania.models.Movies
+import com.example.moviemania.repositories.MovieRepository
 import kotlinx.coroutines.launch
 
 class MovieViewModel : ViewModel() {

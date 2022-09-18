@@ -1,19 +1,22 @@
-package com.example.moviemania.Views
+package com.example.moviemania.views
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import com.example.moviemania.Extensions.GlideImageExtension.loadImage
+import com.example.moviemania.extensions.GlideImageExtension.loadImage
 import com.example.moviemania.R
-import com.example.moviemania.ViewModels.FavViewModel
+import com.example.moviemania.databinding.FragmentMovieDetailBinding
+import com.example.moviemania.viewModels.FavViewModel
 
 class MovieDetailFragment : Fragment() {
     private val viewModel: FavViewModel by viewModels()
+    private lateinit var binding:FragmentMovieDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -23,12 +26,13 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_detail, container, false)
+        binding = FragmentMovieDetailBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarMovieDetailFragment)
+        val toolbar =binding.toolbarMovieDetailFragment
         (activity as MainActivity).setSupportActionBar(toolbar);
 
 
@@ -42,13 +46,14 @@ class MovieDetailFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
      val args =arguments?.let { MovieDetailFragmentArgs.fromBundle(it) }
-        view.findViewById<ImageView>(R.id.iv_moviePosterDetailFragment).loadImage(args?.moviePoster)
-        view.findViewById<ImageView>(R.id.iv_movieBanner).loadImage(args?.movieBanner)
-        view.findViewById<TextView>(R.id.tv_movieNameDetailFragment).text = args?.movieName
-        view.findViewById<TextView>(R.id.movieReleaseDateDetailFragment).text = args?.releaseDate
-        view.findViewById<TextView>(R.id.movieOverview).text = args?.movieOverview
+        binding.ivMoviePosterDetailFragment.loadImage(args?.moviePoster)
+        binding.ivMovieBanner.loadImage(args?.movieBanner)
+        binding.tvMovieNameDetailFragment.text = args?.movieName
+        binding.movieReleaseDateDetailFragment.text = args?.releaseDate
+        binding.movieOverview.text = args?.movieOverview
         toolbar.title = args?.movieName
-        view.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setImageResource(
+        val btnToggle = binding.ivToggleButtonDetailFragment
+        btnToggle.setImageResource(
             if (args?.favToggle == true){
                 R.drawable.redheart
             }
@@ -56,14 +61,14 @@ class MovieDetailFragment : Fragment() {
             R.drawable.redheart_border
             }
         )
-        view.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setOnClickListener{
+        btnToggle.setOnClickListener{
             if (args?.favToggle ==true){
-                it.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setImageResource(R.drawable.redheart_border)
+                btnToggle.setImageResource(R.drawable.redheart_border)
                 args.movie.fav = false
                 viewModel.removeMovie(args.movie)
             }
             else if(args?.favToggle==false) {
-                it.findViewById<ImageView>(R.id.iv_ToggleButtonDetailFragment).setImageResource(R.drawable.redheart)
+              btnToggle.setImageResource(R.drawable.redheart)
                 args.movie.fav=true
                 viewModel.insertMovie(args.movie)
             }
